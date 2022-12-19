@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jobs1/UI/Log_In.dart';
+import '../main.dart';
 import 'Sections.dart';
 
 class SignUp extends StatefulWidget{
@@ -132,35 +133,41 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child:
 
                 Card(elevation: 3,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    //set border radius more than 50% of height and width to make circle
+                  ),
                     borderOnForeground: true,child:    Container(
                  // height: MediaQuery.of(context).size.height,
                   child:Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Card(
-
-                        child: Column(children: [
+                      Column(children: [
                           Container(
 
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 20,top:70),
                             child:
-                            TextFormField(
-                              controller: name,
-                              textCapitalization: TextCapitalization.words,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) return 'Field is required.';
-                                return null;
-                              },
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                controller: name,
+                                textCapitalization: TextCapitalization.words,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) return 'Field is required.';
+                                  return null;
+                                },
 
-                              decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  filled: true,
-                                  icon: Icon(Icons.person),
-                                  labelText:'Name',
+                                decoration: const InputDecoration(
+                                    fillColor: Colors.white,
 
-                                  labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                                    border:OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                                    labelText:'Name',
+
+                                    labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                                ),
                               ),
                             ) ,
 
@@ -168,23 +175,26 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           ),
                           Container(alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 20),
-                            child:TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) return 'Field is required.';
-                                return null;
-                              },
-                              controller: email,
-                              textCapitalization: TextCapitalization.words,
+                            child:Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) return 'Field is required.';
+                                  return null;
+                                },
+                                controller: email,
+                                textCapitalization: TextCapitalization.words,
 
 
-                              decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  filled: true,
+                                decoration: const InputDecoration(
+                                  fillColor: Colors.white,
 
-                                  icon: Icon(Icons.mail),
-                                  labelText:'Email',
+                                  border:OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                                    labelText:'Email',
 
-                                  labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                                    labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                                ),
                               ),
                             ) ,
 
@@ -192,25 +202,29 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                           ),
                           Container(alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 20),
-                            child:TextFormField(
-                              validator:validatePassword,
-                              controller: password,
-                              textCapitalization: TextCapitalization.words,
-                              obscureText: true,
+                            child:Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TextFormField(
+                                validator:validatePassword,
+                                controller: password,
+                                textCapitalization: TextCapitalization.words,
+                                obscureText: true,
 
-                              decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
-                                  filled: true,
-                                  icon: Icon(Icons.password),
-                                  labelText:'Password',
+                                decoration: const InputDecoration(
+                                  fillColor: Colors.white,
 
-                                  labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                                  border:OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(20))),
+                                    labelText:'Password',
+
+                                    labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                                ),
                               ),
                             ) ,
 
                             //color: Colors.blueGrey
                           ),
-                        ]),),
+                        ]),
 
 
                       Padding(padding: EdgeInsets.only(top: 10)),
@@ -275,13 +289,18 @@ padding: const EdgeInsets.symmetric(horizontal: 16.0),
                             setState((){
                               isLoading=false;
                             });
-                               },style: ElevatedButton.styleFrom(
-                          backgroundColor:Colors.black ,
-                          padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                          textStyle: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold))
-                          ,child: Text("Sign Up",style: TextStyle(fontSize: 30),)): Center(child:CircularProgressIndicator())
+                               },
+                          style:ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(18.0), // radius you want
+                                    side: BorderSide(
+                                      color: Colors.transparent, //color
+                                    ),
+                                  ))),
+                          child: Text("Sign Up",style: TextStyle(fontSize: 30),)): Center(child:CircularProgressIndicator())
               ,Padding(padding: EdgeInsets.only(top:MediaQuery.of(context).size.height/30)),
                        InkWell(child: Text("I have an account"),
                           onTap:(){Navigator.pushAndRemoveUntil(

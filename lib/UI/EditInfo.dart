@@ -26,6 +26,7 @@ class _EditInfoState extends State<EditInfo> {
   getUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     Id = (await prefs.getString('id'))!;
+    print(Id);
     setState(() {});
     var userPref = FirebaseFirestore.instance.collection("Users");
     var query = await userPref.where("id", isEqualTo: Id).get();
@@ -46,6 +47,9 @@ class _EditInfoState extends State<EditInfo> {
         Marker(markerId: MarkerId("1"),position:LatLng(double.parse(lat!), double.parse(lang!)) )
       };
     });
+  }
+  getvv()async{
+    await getUserData();
   }
 
   getUserid() async {
@@ -98,7 +102,7 @@ class _EditInfoState extends State<EditInfo> {
 
   @override
   void initState() {
-    getUserData();
+   getvv();
   }
 
   @override

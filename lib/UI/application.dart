@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jobs1/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class Application extends StatefulWidget {
   String sectionId;
@@ -100,134 +101,164 @@ class _ApplicationState extends State<Application>  {
       centerTitle: true),
       body: 
       Container(
-        padding: EdgeInsets.all(10),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-
-              TextFormField(
-                controller: expactSalary,
-                textCapitalization: TextCapitalization.words,
+height: MediaQuery.of(context).size.height/2,
+       // padding: EdgeInsets.all(10),
+        child:
+        Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+            //set border radius more than 50% of height and width to make circle
+          ),
+          elevation: 10,
+          margin: EdgeInsets.all(15),
+          child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              //crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+Padding(padding: EdgeInsets.only(top: 10)),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: expactSalary,
+                    textCapitalization: TextCapitalization.words,
 
 keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
+                    decoration: const InputDecoration(
 
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.monetization_on_outlined),
-                    labelText:'Expacted Salary',
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText:'Expacted Salary',
 
-                    labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                    ),
+                  ),
+                ) ,
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: notes,
+                    textCapitalization: TextCapitalization.words,
+
+
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText:'notes',
+
+                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                    ),
+                  ),
+                ) ,
+                InkWell(child:
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    readOnly: true,
+                    controller: date,
+                    onTap: (){ _selectedDate(context);},
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText:'date',
+
+
+                        labelStyle: TextStyle(color: Colors.black87,fontSize: 10)
+                    ),
+                  ),
                 ),
-              ) ,
+                onTap:(){ _selectedDate(context);} ) ,
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     Icon(
+                //       Icons.date_range,
+                //       size: 20,
+                //       color: Colors.black54,
+                //     ),
+                //     Text(
+                //         "date",
+                //         style: TextStyle(
+                //             color: Colors.black54,
+                //             fontStyle: FontStyle.italic,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 20)),
+                //     Text(
+                //       '${selectedDate.year}' +
+                //           '/' +
+                //           '${selectedDate.month}' +
+                //           '/' +
+                //           '${selectedDate.day}',
+                //       style: TextStyle(
+                //         color: Colors.black54,
+                //         fontStyle: FontStyle.italic,
+                //         fontWeight: FontWeight.bold,
+                //         fontSize: 20,
+                //       ),
+                //     ),
+                //     ElevatedButton(
+                //       style: ButtonStyle(
+                //           backgroundColor: MaterialStateProperty.all<Color>(
+                //               Colors.blue)),
+                //       child: Text(
+                //         "selectDate",
+                //         style: TextStyle(
+                //             color: Colors.white,
+                //             fontStyle: FontStyle.italic,
+                //             fontWeight: FontWeight.bold,
+                //             fontSize: 20),
+                //       ),
+                //       onPressed: () {
+                //         _selectedDate(context);
+                //       },
+                //     ),
+                //   ],
+                // ),
+                Padding(padding: EdgeInsets.only(top: 80)),
+                (applied==false)?
 
-              TextFormField(
-                controller: notes,
-                textCapitalization: TextCapitalization.words,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                      style:ButtonStyle(
 
+                          backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(18.0), // radius you want
+                                side: BorderSide(
+                                  color: Colors.transparent, //color
+                                ),
+                              ))),
+                      onPressed: () async {
+                    setState((){
+                      isLoading=true;
+                    });
 
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.padding),
-                    labelText:'notes',
+                    await addAppli();
+                    setState((){
+                      isLoading=false;
+                    });
+                    Navigator.pop(context);
 
-                    labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
-                ),
-              ) ,
-              InkWell(child:
-              TextFormField(
-                readOnly: true,
-                controller: date,
-                onTap: (){ _selectedDate(context);},
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-
-                    icon: Icon(Icons.padding),
-                    labelText:'date',
-
-
-                    labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
-                ),
-              ),
-              onTap:(){ _selectedDate(context);} ) ,
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     Icon(
-              //       Icons.date_range,
-              //       size: 20,
-              //       color: Colors.black54,
-              //     ),
-              //     Text(
-              //         "date",
-              //         style: TextStyle(
-              //             color: Colors.black54,
-              //             fontStyle: FontStyle.italic,
-              //             fontWeight: FontWeight.bold,
-              //             fontSize: 20)),
-              //     Text(
-              //       '${selectedDate.year}' +
-              //           '/' +
-              //           '${selectedDate.month}' +
-              //           '/' +
-              //           '${selectedDate.day}',
-              //       style: TextStyle(
-              //         color: Colors.black54,
-              //         fontStyle: FontStyle.italic,
-              //         fontWeight: FontWeight.bold,
-              //         fontSize: 20,
-              //       ),
-              //     ),
-              //     ElevatedButton(
-              //       style: ButtonStyle(
-              //           backgroundColor: MaterialStateProperty.all<Color>(
-              //               Colors.blue)),
-              //       child: Text(
-              //         "selectDate",
-              //         style: TextStyle(
-              //             color: Colors.white,
-              //             fontStyle: FontStyle.italic,
-              //             fontWeight: FontWeight.bold,
-              //             fontSize: 20),
-              //       ),
-              //       onPressed: () {
-              //         _selectedDate(context);
-              //       },
-              //     ),
-              //   ],
-              // ),
-              Padding(padding: EdgeInsets.only(top: 50)),
-              (applied==false)?
-
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:Colors.black ,
-                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        textStyle: TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold)),
-                    onPressed: () async {
-                  setState((){
-                    isLoading=true;
-                  });
-
-                  await addAppli();
-                  setState((){
-                    isLoading=false;
-                  });
-                  Navigator.pop(context);
-
-                }, child:Text("add")),
-              ):
-              Text("you applied alredy"),
+                  }, child:Text("add")),
+                ):
+                Text("you applied alredy"),
 
 
-            ]),
+              ]),
+        ),
       ),
 
     );

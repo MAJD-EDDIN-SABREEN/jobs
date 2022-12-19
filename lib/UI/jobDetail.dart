@@ -173,81 +173,36 @@ class JobDetailState extends State<JobDetail> {
       ),
       body:SingleChildScrollView(scrollDirection: Axis.vertical,
       child:Container(
-        padding: EdgeInsets.all(10),
-        child: Form(
-          key:formStateUpdateJob ,
-          child: Column(mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                (file == null) ?
-                InkWell(child: Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 6,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
 
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: NetworkImage(image)
-                      )
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+            //set border radius more than 50% of height and width to make circle
+          ),
+          elevation: 10,
+          margin: EdgeInsets.all(15),
+          child: Form(
+            key:formStateUpdateJob ,
+            child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  (file == null) ?
+                  InkWell(child: Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 6,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: NetworkImage(image)
+                        )
+                    ),
+
+
                   ),
-
-
-                ),
-                  onTap: () {
-                    showDialog(context: context, builder: (BuildContext context) {
-                      return
-                        AlertDialog(
-                          title: Text("please select"),
-                          actions: [
-                            InkWell(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.camera_alt),
-                                  Text("From camera")
-                                ],
-                              )
-                              , onTap: () {
-                              Navigator.pop(context);
-                              uplodImages();
-                            },
-                            ),
-                            Padding(padding: EdgeInsets.all(10),),
-                            InkWell(
-                              child: Row(
-                                children: [
-                                  Icon(Icons.image),
-                                  Text("From gallery")
-                                ],
-                              ),
-                              onTap: () {
-                                Navigator.pop(context);
-                                uplodImagesFromGallery();
-                              },
-                            )
-                            //onTap: uplodImages(),
-
-                          ],
-                        );
-                    });
-                  },)
-
-                    :
-                InkWell(child: Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 6,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: FileImage(file!)
-                      )
-
-                  ),),
                     onTap: () {
                       showDialog(context: context, builder: (BuildContext context) {
                         return
@@ -284,222 +239,312 @@ class JobDetailState extends State<JobDetail> {
                             ],
                           );
                       });
-                    })
-                , Padding(padding: EdgeInsets.only(top: 10)),
-                TextFormField(
-                  controller: title1,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Field is required.';
-                    return null;
-                  },
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      icon: Icon(Icons.padding_rounded),
-                      labelText: 'Title',
+                    },)
 
-                      labelStyle: TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.bold)
+                      :
+                  InkWell(child: Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height / 6,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            fit: BoxFit.fill,
+                            image: FileImage(file!)
+                        )
+
+                    ),),
+                      onTap: () {
+                        showDialog(context: context, builder: (BuildContext context) {
+                          return
+                            AlertDialog(
+                              title: Text("please select"),
+                              actions: [
+                                InkWell(
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.camera_alt),
+                                      Text("From camera")
+                                    ],
+                                  )
+                                  , onTap: () {
+                                  Navigator.pop(context);
+                                  uplodImages();
+                                },
+                                ),
+                                Padding(padding: EdgeInsets.all(10),),
+                                InkWell(
+                                  child: Row(
+                                    children: [
+                                      Icon(Icons.image),
+                                      Text("From gallery")
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    uplodImagesFromGallery();
+                                  },
+                                )
+                                //onTap: uplodImages(),
+
+                              ],
+                            );
+                        });
+                      })
+                  , Padding(padding: EdgeInsets.only(top: 10)),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: title1,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) return 'Field is required.';
+                        return null;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'Title',
+
+                          labelStyle: TextStyle(
+                              color: Colors.black87,fontSize: 10)
+                      ),
+                    ),
                   ),
-                ),
-                TextFormField(
-                  controller: description1,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Field is required.';
-                    return null;
-                  },
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      icon: Icon(Icons.pages_outlined),
-                      labelText: 'Description',
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: description1,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) return 'Field is required.';
+                        return null;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'Description',
 
-                      labelStyle: TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.bold)
+                          labelStyle: TextStyle(
+                              color: Colors.black87,fontSize: 10)
+                      ),
+                    ),
                   ),
-                ),
-                TextFormField(
-                  controller: salary1,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Field is required.';
-                    return null;
-                  },
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      icon: Icon(Icons.monetization_on),
-                      labelText: 'Salary',
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: salary1,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) return 'Field is required.';
+                        return null;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'Salary',
 
-                      labelStyle: TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.bold)
+                          labelStyle: TextStyle(
+                              color: Colors.black87,fontSize: 10)
+                      ),
+                    ),
                   ),
-                ),
-                TextFormField(
-                  controller: requirements1,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Field is required.';
-                    return null;
-                  },
-                  textCapitalization: TextCapitalization.words,
-                  decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: requirements1,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) return 'Field is required.';
+                        return null;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      decoration: const InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'requirement',
+                          labelStyle: TextStyle(
+                              color: Colors.black87,fontSize: 10)),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      controller: age1,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) return 'Field is required.';
+                        return null;
+                      },
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                          border:OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(20))
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          labelText: 'age',
+                          labelStyle: TextStyle(
+                              color: Colors.black87,fontSize: 10)),
+                    ),
+                  ),
+                  Padding(padding:EdgeInsets.only(top: 20)),
+                  Row(mainAxisAlignment: MainAxisAlignment.center,
 
-                      icon: Icon(Icons.padding_rounded),
-                      labelText: 'requirement',
-                      labelStyle: TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.bold)),
-                ),
-                TextFormField(
-                  controller: age1,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) return 'Field is required.';
-                    return null;
-                  },
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      icon: Icon(Icons.view_agenda_outlined),
-                      labelText: 'age',
-                      labelStyle: TextStyle(
-                          color: Colors.black87, fontWeight: FontWeight.bold)),
-                ),
-                Padding(padding:EdgeInsets.only(top: 20)),
-                Row(mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      //Icon(Icons.signal_wifi_statusbar_null_sharp),
 
-                  children: [Icon(Icons.signal_wifi_statusbar_null_sharp)
-                    ,Text("Status",style: TextStyle(fontWeight: FontWeight.bold),)],),
-                DropDownTextField(
-                  padding: EdgeInsets.only(left: 50),
-                  dropdownRadius: 20,
-                  listSpace: 20,
-                  listPadding: ListPadding(top: 20),
-                  initialValue: status,
-                  //enableSearch: true,
+                    //  Text("Status",style: TextStyle(fontWeight: FontWeight.bold),)
+                    ],),
+                  // DropDownTextField(
+                  //   padding: EdgeInsets.only(left: 50),
+                  //   dropdownRadius: 20,
+                  //   listSpace: 20,
+                  //   listPadding: ListPadding(top: 20),
+                  //   initialValue: status,
+                  //   //enableSearch: true,
+                  //
+                  //   validator: (value) {
+                  //     if (value == null) {
+                  //       return "Required field";
+                  //     } else {
+                  //       return null;
+                  //     }
+                  //   },
+                  //   dropDownList: const [
+                  //     DropDownValueModel(name: 'available', value: "T"),
+                  //     DropDownValueModel(name: ' not available', value: "F"),
+                  //   ],
+                  //   listTextStyle: const TextStyle(color: Colors.blue),
+                  //   dropDownItemCount: 8,
+                  //   onChanged: (val) {
+                  //     status1=val.toString();
+                  //   },
+                  // ),
+                  Container(
+                      padding: EdgeInsets.only(top: 10),
+                    height: MediaQuery.of(context).size.height/7,child: GoogleMap(
 
-                  validator: (value) {
-                    if (value == null) {
-                      return "Required field";
-                    } else {
-                      return null;
-                    }
-                  },
-                  dropDownList: const [
-                    DropDownValueModel(name: 'available', value: "T"),
-                    DropDownValueModel(name: ' not available', value: "F"),
-                  ],
-                  listTextStyle: const TextStyle(color: Colors.blue),
-                  dropDownItemCount: 8,
-                  onChanged: (val) {
-                    status1=val.toString();
-                  },
-                ),
-                Container(height: MediaQuery.of(context).size.height/4,child: GoogleMap(
+                    zoomGesturesEnabled: true,
+                    initialCameraPosition: CameraPosition(
 
-                  zoomGesturesEnabled: true,
-                  initialCameraPosition: CameraPosition(
+                      target: startLocation!,
+                      zoom: 14.0,
+                    )
+                    ,
+                    markers: myMarker!,
+                    mapType: MapType.normal,
+                    onTap: (latlang){
+                      setState(() {
+                        myMarker!.remove(Marker(markerId: MarkerId("1")));
+                        myMarker!.add( Marker(markerId: MarkerId("1"),position:latlang ));
+                        lat=latlang.latitude.toString();
+                        lang=latlang.longitude.toString();
+                      });
+                      print(latlang.latitude);
 
-                    target: startLocation!,
-                    zoom: 14.0,
+                    },//map type
+                    onMapCreated: (controller) {
+                      //method called when map is created
+                      setState(() {
+                        mapController = controller;
+                      });
+                    },
+                  ) ,),
+
+
+
+
+
+
+
+
+                  Padding(padding: EdgeInsets.only(top: 30))
+                  , Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      (isLoading == false) ?
+
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/2.6,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.black),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(18.0), // radius you want
+                                      side: BorderSide(
+                                        color: Colors.transparent, //color
+                                      ),
+                                    ))),
+                            onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          var refStorage = FirebaseStorage.instance.ref(
+                              "images/$nameImage");
+                          if (file != null) {
+                            await refStorage.putFile(file!);
+                            url = await refStorage.getDownloadURL();
+                          }
+                          else {
+                            url = image;
+                          }
+                          ;
+                         // url = await refStorage.getDownloadURL();
+                          await updateData(id,context);
+                          setState(() {
+                            isLoading = false;
+                          });
+
+                        }, child: Text("Update")),
+                      ) :
+                      Center(child: CircularProgressIndicator()),
+                      Padding(padding: EdgeInsets.only(left: 5)),
+                      (isLoading == false) ?
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/2.6,
+                        child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.red),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(18.0), // radius you want
+                                      side: BorderSide(
+                                        color: Colors.transparent, //color
+                                      ),
+                                    ))),
+                            onPressed: () async {
+                          setState(() {
+                            isLoading = true;
+                          });
+                          await deleteData(id);
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pop(context);
+                        }, child: Text("Delete")),
+                      ) :
+                      Center(child: CircularProgressIndicator())
+                    ],
                   )
-                  ,
-                  markers: myMarker!,
-                  mapType: MapType.normal,
-                  onTap: (latlang){
-                    setState(() {
-                      myMarker!.remove(Marker(markerId: MarkerId("1")));
-                      myMarker!.add( Marker(markerId: MarkerId("1"),position:latlang ));
-                      lat=latlang.latitude.toString();
-                      lang=latlang.longitude.toString();
-                    });
-                    print(latlang.latitude);
 
-                  },//map type
-                  onMapCreated: (controller) {
-                    //method called when map is created
-                    setState(() {
-                      mapController = controller;
-                    });
-                  },
-                ) ,),
-
-
-
-
-
-
-
-
-                Padding(padding: EdgeInsets.only(top: 30))
-                , Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    (isLoading == false) ?
-
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width/2.2,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:Colors.black ,
-                              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                              textStyle: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold)),
-                          onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        var refStorage = FirebaseStorage.instance.ref(
-                            "images/$nameImage");
-                        if (file != null) {
-                          await refStorage.putFile(file!);
-                          url = await refStorage.getDownloadURL();
-                        }
-                        else {
-                          url = image;
-                        }
-                        ;
-                       // url = await refStorage.getDownloadURL();
-                        await updateData(id,context);
-                        setState(() {
-                          isLoading = false;
-                        });
-
-                      }, child: Text("Update")),
-                    ) :
-                    Center(child: CircularProgressIndicator()),
-                    Padding(padding: EdgeInsets.only(left: 5)),
-                    (isLoading == false) ?
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width/2.2,
-                      child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:Colors.black ,
-                              padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                              textStyle: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold)),
-                          onPressed: () async {
-                        setState(() {
-                          isLoading = true;
-                        });
-                        await deleteData(id);
-                        setState(() {
-                          isLoading = false;
-                        });
-                        Navigator.pop(context);
-                      }, child: Text("Delete")),
-                    ) :
-                    Center(child: CircularProgressIndicator())
-                  ],
-                )
-
-              ]) ,
+                ]) ,
+          ),
         ),
       )
 

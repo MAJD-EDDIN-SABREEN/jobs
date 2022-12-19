@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jobs1/UI/SignUp.dart';
+import '../main.dart';
 import 'Sections.dart';
 
 class Login extends StatefulWidget {
@@ -88,21 +89,30 @@ class _LoginState extends State<Login> {
          borderRadius: BorderRadius.circular(20),
           ),
           child:Card(
-            elevation: 5,child:    Form(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50),
+              //set border radius more than 50% of height and width to make circle
+            ),
+            elevation: 5,child:
+          Form(
             key: formStateLogin,
             child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 scrollDirection: Axis.vertical,
                 child: Container(
-                  height: MediaQuery.of(context).size.height/2,
+                  height: MediaQuery.of(context).size.height/1.5,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Center(child: Text("Login" ,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 50),),),
+                      Center(
+                          child: Icon(
+                            Icons.person,
+                            size: MediaQuery.of(context).size.width / 4,
+                          )),
+                      Center(child: Text("Login" ,style: TextStyle(fontSize: 50),),),
 Padding(padding: EdgeInsets.only(top: 10)),
-                      Card(
-                        child: Column(children: [
+                    Column(children: [
                           Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 20),
@@ -114,17 +124,24 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               },
                               textCapitalization: TextCapitalization.words,
                               decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
+                                  fillColor: Colors.white,
+                                  border:OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(Radius.circular(20))
+                                  ),
+
                                   filled: true,
-                                  icon: Icon(Icons.mail),
+                                  //icon: Icon(Icons.mail),
                                   labelText: 'Email',
                                   labelStyle: TextStyle(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.bold)),
+                                    fontSize: 10,
+                                      //color: Colors.black87,
+                                     // fontWeight: FontWeight.bold
+                                  )),
                             ),
 
                             //color: Colors.blueGrey
                           ),
+                          Padding(padding: EdgeInsets.only(top: 10)),
                           Container(
                             alignment: Alignment.center,
                             padding: EdgeInsets.only(left: 20),
@@ -136,34 +153,57 @@ Padding(padding: EdgeInsets.only(top: 10)),
                               },
                               textCapitalization: TextCapitalization.words,
                               obscureText: true,
+                              style:TextStyle(color: Colors.black) ,
                               decoration: const InputDecoration(
-                                  border: UnderlineInputBorder(),
+                                fillColor: Colors.white,
+
+                                  border:OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(Radius.circular(20))
+                                  ),
+
                                   filled: true,
-                                  icon: Icon(Icons.password),
+                                 // icon: Icon(Icons.password),
                                   labelText: 'Password',
                                   labelStyle: TextStyle(
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.bold)),
+                                      fontSize: 10,
+                                      //color: Colors.black87,
+                                      //fontWeight: FontWeight.bold
+                                  )),
                             ),
 
                             //color: Colors.blueGrey
                           ),
                         ]),
-                      ),
+
                       Padding(
                           padding: EdgeInsets.only(
-                              top: MediaQuery.of(context).size.height / 10)),
+                              top: MediaQuery.of(context).size.height / 14)),
                       (isLoading == false)
                           ?
-                      SizedBox(
+                      Container(
+                        height: 50,
+
+                       // decoration: BoxDecoration(borderRadius: BorderRadius.circular(100)),
                         width: MediaQuery.of(context).size.width/1.5,
                         child: ElevatedButton(
-style: ElevatedButton.styleFrom(
-  backgroundColor:Colors.black ,
-    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-    textStyle: TextStyle(
-        fontSize: 10,
-        fontWeight: FontWeight.bold)),
+
+                          style:ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(CustomColors.button),
+     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+         RoundedRectangleBorder(
+           borderRadius:
+           BorderRadius.circular(18.0), // radius you want
+           side: BorderSide(
+             color: Colors.transparent, //color
+           ),
+         ))),
+// ElevatedButton.styleFrom(
+//
+//   backgroundColor:Colors.black ,
+//     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+//     textStyle: TextStyle(
+//         fontSize: 10,
+//         fontWeight: FontWeight.bold)),
                             onPressed: () async {
                               setState(() {
                                 isLoading = true;

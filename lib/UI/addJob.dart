@@ -13,6 +13,8 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
+import '../main.dart';
+
 class AddJob extends StatefulWidget {
   String sectionId;
 
@@ -138,21 +140,78 @@ try{
       scrollDirection: Axis.vertical,
       child:
       Container(
-        padding: EdgeInsets.all(10),
-        child: Form(
-          key: formStateAddJob,
-          child:  Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              (file == null)
-                  ? Container(
-                height: MediaQuery.of(context).size.height / 6,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                    onPressed: () {
+       // height: MediaQuery.of(context).size.height/1.1,
+        //padding: EdgeInsets.all(10),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+            //set border radius more than 50% of height and width to make circle
+          ),
+          elevation: 10,
+          margin: EdgeInsets.all(15),
+          child: Form(
+            key: formStateAddJob,
+            child:  Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                (file == null)
+                    ? Container(
+                  height: MediaQuery.of(context).size.height / 6,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("please select"),
+                                actions: [
+                                  InkWell(
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.camera_alt),
+                                        Text("From camera")
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      uplodImages();
+                                    },
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.all(10),
+                                  ),
+                                  InkWell(
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.image),
+                                        Text("From gallery")
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      uplodImagesFromGallery();
+                                    },
+                                  )
+                                  //onTap: uplodImages(),
+                                ],
+                              );
+                            });
+                      },
+                      icon: Icon(Icons.add)),
+                )
+                    : InkWell(
+                    child: Container(
+                      height: MediaQuery.of(context).size.height / 6,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                              fit: BoxFit.fill, image: FileImage(file!))),
+                    ),
+                    onTap: () {
                       showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -190,300 +249,291 @@ try{
                               ],
                             );
                           });
+                    }),
+                Padding(padding: EdgeInsets.only(top: 10)),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: title,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Field is required.';
+                      return null;
                     },
-                    icon: Icon(Icons.add)),
-              )
-                  : InkWell(
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 6,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            fit: BoxFit.fill, image: FileImage(file!))),
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Title',
+                        labelStyle: TextStyle(
+                            color: Colors.black87,fontSize: 10)),
                   ),
-                  onTap: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("please select"),
-                            actions: [
-                              InkWell(
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.camera_alt),
-                                    Text("From camera")
-                                  ],
-                                ),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  uplodImages();
-                                },
-                              ),
-                              Padding(
-                                padding: EdgeInsets.all(10),
-                              ),
-                              InkWell(
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.image),
-                                    Text("From gallery")
-                                  ],
-                                ),
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  uplodImagesFromGallery();
-                                },
-                              )
-                              //onTap: uplodImages(),
-                            ],
-                          );
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: descrptuon,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Field is required.';
+                      return null;
+                    },
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'Descrption',
+                        labelStyle: TextStyle(
+                            color: Colors.black87,fontSize: 10)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: price,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Field is required.';
+                      return null;
+                    },
+                    textCapitalization: TextCapitalization.words,
+                    keyboardType:TextInputType.number ,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'salary',
+                        labelStyle: TextStyle(
+                            color: Colors.black87,fontSize: 10)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: requirements,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Field is required.';
+                      return null;
+                    },
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'requirement',
+                        labelStyle: TextStyle(
+                            color: Colors.black87,fontSize: 10)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: age,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Field is required.';
+                      return null;
+                    },
+                    textCapitalization: TextCapitalization.words,
+                    keyboardType:TextInputType.number ,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        labelText: 'age',
+                        labelStyle: TextStyle(
+                            color: Colors.black87,fontSize: 10)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextFormField(
+                    controller: status,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) return 'Field is required.';
+                      return null;
+                    },
+                    keyboardType:TextInputType.number ,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: const InputDecoration(
+                        border:OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20))
+                        ),
+                        filled: true,
+                       fillColor: Colors.white,
+                       // icon: Icon(Icons.safety_divider),
+                        labelText: 'status',
+                        labelStyle: TextStyle(
+                            color: Colors.black87,fontSize: 10)),
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.only(top: 10),
+                  height: MediaQuery.of(context).size.height / 7,
+                  child: Stack(children: [
+                    GoogleMap(
+                      //Map widget from google_maps_flutter package
+                      zoomGesturesEnabled: true, //enable Zoom in, out on map
+                      initialCameraPosition: CameraPosition(
+                        //innital position in map
+                        target: startLocation, //initial position
+                        zoom: 14.0, //initial zoom level
+                      )
+                      ,
+                      markers: myMarker,
+                      mapType: MapType.normal,
+                      onTap: (latlang){
+                        setState(() {
+                          myMarker.remove(Marker(markerId: MarkerId("1")));
+                          myMarker.add( Marker(markerId: MarkerId("1"),position:latlang ));
+                          lat=latlang.latitude.toString();
+                          lang=latlang.longitude.toString();
                         });
-                  }),
-              Padding(padding: EdgeInsets.only(top: 10)),
-              TextFormField(
-                controller: title,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Field is required.';
-                  return null;
-                },
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.pages_outlined),
-                    labelText: 'Title',
-                    labelStyle: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold)),
-              ),
+                        print(latlang.latitude);
 
-              TextFormField(
-                controller: descrptuon,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Field is required.';
-                  return null;
-                },
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.padding),
-                    labelText: 'Descrption',
-                    labelStyle: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold)),
-              ),
-              TextFormField(
-                controller: price,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Field is required.';
-                  return null;
-                },
-                textCapitalization: TextCapitalization.words,
-                keyboardType:TextInputType.number ,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.monetization_on),
-                    labelText: 'salary',
-                    labelStyle: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold)),
-              ),
-              TextFormField(
-                controller: requirements,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Field is required.';
-                  return null;
-                },
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.padding_rounded),
-                    labelText: 'requirement',
-                    labelStyle: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold)),
-              ),
-              TextFormField(
-                controller: age,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Field is required.';
-                  return null;
-                },
-                textCapitalization: TextCapitalization.words,
-                keyboardType:TextInputType.number ,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.view_agenda_outlined),
-                    labelText: 'age',
-                    labelStyle: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold)),
-              ),
-              TextFormField(
-                controller: status,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return 'Field is required.';
-                  return null;
-                },
-                keyboardType:TextInputType.number ,
-                textCapitalization: TextCapitalization.words,
-                decoration: const InputDecoration(
-                    border: UnderlineInputBorder(),
-                    filled: true,
-                    icon: Icon(Icons.safety_divider),
-                    labelText: 'status',
-                    labelStyle: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.bold)),
-              ),
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                height: MediaQuery.of(context).size.height / 4,
-                child: Stack(children: [
-                  GoogleMap(
-                    //Map widget from google_maps_flutter package
-                    zoomGesturesEnabled: true, //enable Zoom in, out on map
-                    initialCameraPosition: CameraPosition(
-                      //innital position in map
-                      target: startLocation, //initial position
-                      zoom: 14.0, //initial zoom level
-                    )
-                    ,
-                    markers: myMarker,
-                    mapType: MapType.normal,
-                    onTap: (latlang){
-                      setState(() {
-                        myMarker.remove(Marker(markerId: MarkerId("1")));
-                        myMarker.add( Marker(markerId: MarkerId("1"),position:latlang ));
-                        lat=latlang.latitude.toString();
-                        lang=latlang.longitude.toString();
-                      });
-                      print(latlang.latitude);
+                      },//map type
+                      onMapCreated: (controller) {
+                        //method called when map is created
+                        setState(() {
+                          mapController = controller;
+                        });
+                      },
+                    ),
 
-                    },//map type
-                    onMapCreated: (controller) {
-                      //method called when map is created
-                      setState(() {
-                        mapController = controller;
-                      });
-                    },
-                  ),
+                    //search autoconplete input
+                    // Positioned(
+                    //     //search input bar
+                    //     top: 10,
+                    //     child:
+                    //     InkWell(
+                    //         onTap: () async {
+                    //           var place = await PlacesAutocomplete.show(
+                    //               context: context,
+                    //               apiKey: googleApikey,
+                    //               mode: Mode.overlay,
+                    //               types: [],
+                    //               strictbounds: false,
+                    //               components: [Component(Component.country, 'np')],
+                    //               //google_map_webservice package
+                    //               onError: (err) {
+                    //                 print(err.predictions.toString());
+                    //               });
+                    //
+                    //           if (place != null) {
+                    //             setState(() {
+                    //               location = place.description.toString();
+                    //             });
+                    //
+                    //             //form google_maps_webservice package
+                    //             final plist = GoogleMapsPlaces(
+                    //               apiKey: googleApikey,
+                    //               apiHeaders: await GoogleApiHeaders().getHeaders(),
+                    //               //from google_api_headers package
+                    //             );
+                    //             String placeid = place.placeId ?? "0";
+                    //             final detail =
+                    //                 await plist.getDetailsByPlaceId(placeid);
+                    //             final geometry = detail.result.geometry!;
+                    //             final lat = geometry.location.lat;
+                    //             final lang = geometry.location.lng;
+                    //
+                    //             var newlatlang = LatLng(lat, lang);
+                    //             setState(() {
+                    //               lat1 = lat.toString();
+                    //               lang1 = lang.toString();
+                    //             });
+                    //
+                    //             //move map camera to selected place with animation
+                    //             mapController?.animateCamera(
+                    //                 CameraUpdate.newCameraPosition(CameraPosition(
+                    //                     target: newlatlang, zoom: 17)));
+                    //           }
+                    //         },
+                    //         child: Padding(
+                    //           padding: EdgeInsets.all(15),
+                    //           child: Card(
+                    //             child:
+                    //             Container(
+                    //                 padding: EdgeInsets.all(0),
+                    //                 width: MediaQuery.of(context).size.width - 40,
+                    //                 child: ListTile(
+                    //                   title: Text(
+                    //                     location,
+                    //                     style: TextStyle(fontSize: 18),
+                    //                   ),
+                    //                   trailing: Icon(Icons.search),
+                    //                   dense: true,
+                    //                 )),
+                    //           ),
+                    //         )))
+                  ]),
+                ),
 
-                  //search autoconplete input
-                  // Positioned(
-                  //     //search input bar
-                  //     top: 10,
-                  //     child:
-                  //     InkWell(
-                  //         onTap: () async {
-                  //           var place = await PlacesAutocomplete.show(
-                  //               context: context,
-                  //               apiKey: googleApikey,
-                  //               mode: Mode.overlay,
-                  //               types: [],
-                  //               strictbounds: false,
-                  //               components: [Component(Component.country, 'np')],
-                  //               //google_map_webservice package
-                  //               onError: (err) {
-                  //                 print(err.predictions.toString());
-                  //               });
-                  //
-                  //           if (place != null) {
-                  //             setState(() {
-                  //               location = place.description.toString();
-                  //             });
-                  //
-                  //             //form google_maps_webservice package
-                  //             final plist = GoogleMapsPlaces(
-                  //               apiKey: googleApikey,
-                  //               apiHeaders: await GoogleApiHeaders().getHeaders(),
-                  //               //from google_api_headers package
-                  //             );
-                  //             String placeid = place.placeId ?? "0";
-                  //             final detail =
-                  //                 await plist.getDetailsByPlaceId(placeid);
-                  //             final geometry = detail.result.geometry!;
-                  //             final lat = geometry.location.lat;
-                  //             final lang = geometry.location.lng;
-                  //
-                  //             var newlatlang = LatLng(lat, lang);
-                  //             setState(() {
-                  //               lat1 = lat.toString();
-                  //               lang1 = lang.toString();
-                  //             });
-                  //
-                  //             //move map camera to selected place with animation
-                  //             mapController?.animateCamera(
-                  //                 CameraUpdate.newCameraPosition(CameraPosition(
-                  //                     target: newlatlang, zoom: 17)));
-                  //           }
-                  //         },
-                  //         child: Padding(
-                  //           padding: EdgeInsets.all(15),
-                  //           child: Card(
-                  //             child:
-                  //             Container(
-                  //                 padding: EdgeInsets.all(0),
-                  //                 width: MediaQuery.of(context).size.width - 40,
-                  //                 child: ListTile(
-                  //                   title: Text(
-                  //                     location,
-                  //                     style: TextStyle(fontSize: 18),
-                  //                   ),
-                  //                   trailing: Icon(Icons.search),
-                  //                   dense: true,
-                  //                 )),
-                  //           ),
-                  //         )))
-                ]),
-              ),
+                //   child:  GoogleMap(
+                //     mapType: MapType.normal,
+                //     initialCameraPosition: _kGooglePlex,
+                //     onMapCreated: (GoogleMapController controller) {
+                //      gmc=controller;
+                //     },
+                //   ),
+                // ),
 
-              //   child:  GoogleMap(
-              //     mapType: MapType.normal,
-              //     initialCameraPosition: _kGooglePlex,
-              //     onMapCreated: (GoogleMapController controller) {
-              //      gmc=controller;
-              //     },
-              //   ),
-              // ),
+                Padding(padding: EdgeInsets.only(top: 10)),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height/20,
 
-              Padding(padding: EdgeInsets.only(top: 50)),
-              SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child:(  isLoading == false)?
-                ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor:Colors.black ,
-                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                        textStyle: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold)),
-                    onPressed: () async {
-                      setState(() {
-                        isLoading = true;
-                      });
+                  child:(  isLoading == false)?
+                  ElevatedButton(
+                      style:ButtonStyle(
+
+                          backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(18.0), // radius you want
+                                side: BorderSide(
+                                  color: Colors.transparent, //color
+                                ),
+                              ))),
+                      onPressed: () async {
+                        setState(() {
+                          isLoading = true;
+                        });
 
 
-                      if(file!=null){
-                        var refStorage =
-                        FirebaseStorage.instance.ref("images/$nameImage");
-                        await refStorage.putFile(file!);
+                        if(file!=null){
+                          var refStorage =
+                          FirebaseStorage.instance.ref("images/$nameImage");
+                          await refStorage.putFile(file!);
 
-                        url = await refStorage.getDownloadURL();
-                      }
+                          url = await refStorage.getDownloadURL();
+                        }
 
-                      latlong = await mapController?.getLatLng(ScreenCoordinate(x: 200, y: 200));
-                      setState(() {
+                        latlong = await mapController?.getLatLng(ScreenCoordinate(x: 200, y: 200));
+                        setState(() {
 
-                      });
-                      addJob(context);
-                      setState(() {
-                        isLoading = false;
-                      });
+                        });
+                        addJob(context);
+                        setState(() {
+                          isLoading = false;
+                        });
 
-                    },
-                    child: Text("add")):Center(child: CircularProgressIndicator(),),
-              ),
-            ]),),
+                      },
+                      child: Text("add")):Center(child: CircularProgressIndicator(),),
+                ),
+              ]),),
+        ),
       )
 
     ));

@@ -53,11 +53,13 @@ print (id);
                   itemBuilder: (context,i)
                   {
 
-                    return Container(
+                    return
+                      Container(
+                        height: MediaQuery.of(context).size.height/4,
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
                       child: Card(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(80),
+                          borderRadius: BorderRadius.circular(30),
                           //set border radius more than 50% of height and width to make circle
                         ),
                         margin: EdgeInsets.all(30),
@@ -67,71 +69,61 @@ child:
 Column(crossAxisAlignment: CrossAxisAlignment.center,
     children:  [
   Padding(
-    padding: EdgeInsets.only(left: 30,right: 30),
-    child: Card(
-
-      elevation: 3,
-      child: Row(
+    padding: EdgeInsets.only(top: 10,right: 10,left: 10),
+    child: Row(
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Expected salary"),
+
+            Text("Expected salary :",style: TextStyle(fontWeight: FontWeight.bold),),
             Text(
                 "${snapshots.data.docs[i].data()["expected salary"]}")
           ]),
-    ),
+
   ),
   Padding(
-    padding: EdgeInsets.only(left: 10,right: 10),
-    child: Card(
-      elevation: 3,
-      child: Row(
+    padding: EdgeInsets.all(5),
+    child:  Row(
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Notes"),
+            Text("Notes :",style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
                 "${snapshots.data.docs[i].data()["notes"]}")
           ]),
-    ),
+
   ),
   Padding(
-    padding: EdgeInsets.only(left: 10,right: 10),
-    child: Card(
-      elevation: 3,
-      child: Row(
+    padding: EdgeInsets.all(5),
+    child:  Row(
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Start At"),
+            Text("Start At :",style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
                 "${snapshots.data.docs[i].data()["Start_at"]}")
           ]),
-    ),
+
   ),
   Padding(
-    padding: EdgeInsets.only(left: 10,right: 10),
-    child: Card(
-      elevation: 3,
-      child: Row(
+    padding: EdgeInsets.all(5),
+    child:  Row(
           mainAxisAlignment:
           MainAxisAlignment.spaceBetween,
           children: [
-            Text("Created At"),
+            Text("Created At :",style: TextStyle(fontWeight: FontWeight.bold)),
             Text(
                 "${snapshots.data.docs[i].data()["created_at"]}")
           ]),
     ),
-  ),
+
   Padding(
-    padding: EdgeInsets.only(left: 30,right: 30),
-    child: Card(
-        //elevation: 3,
-        child: Row(
+    padding: EdgeInsets.all(5),
+    child:  Row(
             mainAxisAlignment:
             MainAxisAlignment.spaceBetween,
             children: [
-              Text("Status"),
+              Text("Status :",style: TextStyle(fontWeight: FontWeight.bold)),
               if ((snapshots.data.docs[i]
                   .data()["status"])
                   .toString() ==
@@ -147,8 +139,12 @@ Column(crossAxisAlignment: CrossAxisAlignment.center,
                     .toString() ==
                     "2")
                   Text("UnAcceptable"),
-            ])),
+            ]),
   ),
+
+
+
+
 
 
 ]),

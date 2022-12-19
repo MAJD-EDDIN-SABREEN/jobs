@@ -2,20 +2,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
+
 class ShowApplicaton extends StatefulWidget {
   String sectionId;
   String jobId;
-
-  ShowApplicaton(this.sectionId, this.jobId);
+  String jobname;
+  ShowApplicaton(this.sectionId, this.jobId,this.jobname);
 
   @override
   State<ShowApplicaton> createState() =>
-      _ShowApplicatonState(this.sectionId, this.jobId);
+      _ShowApplicatonState(this.sectionId, this.jobId,this.jobname);
 }
 
 class _ShowApplicatonState extends State<ShowApplicaton> {
   String sectionId;
   String jobId;
+  String jobname;
   String username = "";
   String email = "";
 
@@ -66,7 +69,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
     });
   }
 
-  _ShowApplicatonState(this.sectionId, this.jobId);
+  _ShowApplicatonState(this.sectionId, this.jobId,this.jobname);
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +79,10 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: CustomColors.appBar,
+        title: Text(jobname),
+        centerTitle: true,
+
       ),
       body: StreamBuilder<dynamic>(
           stream: jobRef.snapshots(),
@@ -104,7 +110,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                   child: Card(child: Text(email)),
                                 ),
                                 Card(
-                                  elevation: 3,
+                                  //elevation: 3,
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -115,7 +121,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       ]),
                                 ),
                                 Card(
-                                  elevation: 3,
+                                  //elevation: 3,
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -126,7 +132,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       ]),
                                 ),
                                 Card(
-                                  elevation: 3,
+                                 // elevation: 3,
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -137,7 +143,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       ]),
                                 ),
                                 Card(
-                                  elevation: 3,
+                                 // elevation: 3,
                                   child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
@@ -148,7 +154,7 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                       ]),
                                 ),
                                 Card(
-                                    elevation: 3,
+                                   // elevation: 3,
                                     child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -178,6 +184,16 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           ElevatedButton(
+                                              style:ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius.circular(18.0), // radius you want
+                                                        side: BorderSide(
+                                                          color: Colors.transparent, //color
+                                                        ),
+                                                      ))),
                                               onPressed: () {
                                                 onPressAcce(
                                                     (snapshots.data.docs[i].id)
@@ -186,6 +202,16 @@ class _ShowApplicatonState extends State<ShowApplicaton> {
                                               },
                                               child: Text("Acceptable")),
                                           ElevatedButton(
+                                              style:ButtonStyle(
+                                                  backgroundColor: MaterialStateProperty.all(CustomColors.button),
+                                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius.circular(18.0), // radius you want
+                                                        side: BorderSide(
+                                                          color: Colors.transparent, //color
+                                                        ),
+                                                      ))),
                                               onPressed: () {
                                                 onPressunAcce(
                                                     (snapshots.data.docs[i].id)

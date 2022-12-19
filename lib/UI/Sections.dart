@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jobs1/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jobs1/UI/Log_In.dart';
 import 'package:jobs1/UI/Myapplication.dart';
@@ -40,7 +41,7 @@ class SectionState extends State<Section> {
 
     }
     if(index==2){
-      Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting()));
+      Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting(role)));
 
     }
     setState(() {
@@ -59,6 +60,7 @@ signOut() async {
   String? email;
   String? image;
   String? name;
+
   changeTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var theme = await prefs.getBool('theme');
@@ -72,20 +74,27 @@ signOut() async {
 
   }
   getEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    email = await prefs.getString('email');
-    var userPref = FirebaseFirestore.instance.collection("Users");
-    var query = await userPref.where("email", isEqualTo: email).get();
-    //image = query.docs[0]["image"];
-    name = query.docs[0]["name"];
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      email = await prefs.getString('email');
+      var userPref = FirebaseFirestore.instance.collection("Users");
+      var query = await userPref.where("email", isEqualTo: email).get();
+      //image = query.docs[0]["image"];
+      name = query.docs[0]["name"];
+      print("hiiiii");
+    }
+  catch(e){
+    print("hiiiii");
+      print(e);
+  }
+
 
     setState(() {});
-    print(email);
+    print(name);
   }
 
   getDetail() async {
     await getEmail();
-    print("hi");
 
 
 
@@ -99,7 +108,7 @@ signOut() async {
 
   @override
   Widget build(BuildContext context) {
-print(name);
+
     return
       (role=="manger")?
       Scaffold(
@@ -115,51 +124,90 @@ print(name);
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        image != null
-                            ? Container(
-                            height: MediaQuery.of(context).size.height / 6,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  fit: BoxFit.fill, image: NetworkImage(image!)),
-                            ))
-                            : Container(
-                          height: MediaQuery.of(context).size.height / 6,
-                          width: MediaQuery.of(context).size.width / 6,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: Center(
-                              child: Icon(
-                                Icons.person,
-                                size: MediaQuery.of(context).size.width / 4,
-                              )),
-                        ),
-                        Column(children: [
-                          Text(name!)
-                          ,Text(email!),
+                    Container(
+                      color: Colors.black,
+
+                      height: MediaQuery.of(context).size.height/3,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          image != null
+                              ? Center(
+                            child: Container(
+                                height: MediaQuery.of(context).size.height / 6,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      fit: BoxFit.fill, image: NetworkImage(image!)),
+                                )),
+                          )
+                              :
+                            Container(
+                              height: MediaQuery.of(context).size.height / 6,
+                              width: MediaQuery.of(context).size.width / 2,
+                                      child: Container(
+
+//height: MediaQuery.of(context).size.height,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+
+                                          //borderRadius: BorderRadius.circular(100)
+                                  //  ,
+                                            image: DecorationImage(
+
+                                            fit: BoxFit.fill, image:AssetImage("images/job.jpg")),
+
+                                        ),
+                                        // child: Icon(
+                                        //   color: Colors.white,
+                                        //   Icons.person,
+                                        //   size: MediaQuery.of(context).size.width / 4,
+                                        // ),
+                                      ),
+
+
+                            ),
+
+
+Padding(padding: EdgeInsets.only(top: 10)),
+
+  Center(
+    child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+      Center(child: Text("${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
+
+
+
+
+      Card(
+          margin: EdgeInsets.all(5),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(50),
+            //set border radius more than 50% of height and width to make circle
+          ),
+          elevation: 5,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text("${role!}",style: TextStyle(color: Colors.black,fontSize: 15),),
+          ))
+    ]),
+  ),
+                       // Center(child: Text("        ${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
+                          // Padding(padding: EdgeInsets.only(top: 10)),
+                          // Center(child: Text("        ${role!}",style: TextStyle(color: Colors.white),)),
+                          Padding(padding: EdgeInsets.only(top: 10))
+                          ,Center(child: Text("${email!}",style: TextStyle(color: Colors.white,fontSize: 10),)),
+                
 
                         ],
-                        )
-
-                      ],
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width/2,
-                      child: Center(
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:Colors.black ,
-                            ),
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) => EditInfo()));
-                            },
-                            child: Text("Edit info")),
                       ),
                     ),
+
+
+
                     Container(
 
                       height: MediaQuery.of(context).size.height / 10,
@@ -173,17 +221,28 @@ print(name);
                           color: Colors.black,
                           size: 30,
                         ),
-                       Padding(padding: EdgeInsets.only(right: 20)),
+                       Padding(padding: EdgeInsets.only(right: 30)),
                         SizedBox(
                           width: MediaQuery.of(context).size.width/1.8,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:Colors.black ,
+                          child:
+                            InkWell(
+                              child: Text(
+                                  "Section"
+                                      ,style: TextStyle(fontSize: 20),
                               ),
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => MyApplication()));
-                              }, child: Text("Section")),
+                              onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MyApplication()));
+        } ,
+                            )
+                          // ElevatedButton(
+                          //     style: ElevatedButton.styleFrom(
+                          //       backgroundColor:Colors.black ,
+                          //     ),
+                          //     onPressed: () {
+                          //       Navigator.push(context,
+                          //           MaterialPageRoute(builder: (context) => MyApplication()));
+                          //     }, child: Text("Section")),
                         ),
                       ]),
                     ),
@@ -200,15 +259,26 @@ print(name);
                           color: Colors.black,
                           size: 30,
                         ),
-                        Padding(padding: EdgeInsets.only(right: 20)),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.8,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:Colors.black ,
-                              ),
-                              onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting()));}, child: Text("Setting")),
-                        ),
+                      Padding(padding: EdgeInsets.only(right: 36)),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width/1.8,
+                          child:
+                          InkWell(
+                            child: Text(
+                              "Setting"
+                              ,style: TextStyle(fontSize: 20),
+                            ),
+                            onTap:  () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting(role)));}
+                          )),
+                        // Padding(padding: EdgeInsets.only(right: 20)),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width / 1.8,
+                        //   child: ElevatedButton(
+                        //       style: ElevatedButton.styleFrom(
+                        //         backgroundColor:Colors.black ,
+                        //       ),
+                        //       onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting()));}, child: Text("Setting")),
+                        // ),
                       ]),
                     ),
                     Container(
@@ -223,22 +293,39 @@ print(name);
                           color: Colors.black,
                           size: 30,
                         ),
-                        Padding(padding: EdgeInsets.only(right: 20)),
+                        Padding(padding: EdgeInsets.only(right: 36)),
                         SizedBox(
-                          width: MediaQuery.of(context).size.width / 1.8,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:Colors.black ,
-                              ),
-                              onPressed: () async {
-                                signOut();
-                                SharedPreferences prefs = await SharedPreferences.getInstance();
-                                prefs.remove('email');
-                                prefs.remove('id');
-                                prefs.remove('theme');
-                              },
-                              child: Text("Logout")),
-                        ),
+                            width: MediaQuery.of(context).size.width/1.8,
+                            child:
+                            InkWell(
+                                child: Text(
+                                  "Logout"
+                                  ,style: TextStyle(fontSize: 20),
+                                ),
+                                onTap:  () async{
+                                  signOut();
+                                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                                          prefs.remove('email');
+                                          prefs.remove('id');
+                                          prefs.remove('theme');
+                                 }
+                            )),
+                        // Padding(padding: EdgeInsets.only(right: 20)),
+                        // SizedBox(
+                        //   width: MediaQuery.of(context).size.width / 1.8,
+                        //   child: ElevatedButton(
+                        //       style: ElevatedButton.styleFrom(
+                        //         backgroundColor:Colors.black ,
+                        //       ),
+                        //       onPressed: () async {
+                        //         signOut();
+                        //         SharedPreferences prefs = await SharedPreferences.getInstance();
+                        //         prefs.remove('email');
+                        //         prefs.remove('id');
+                        //         prefs.remove('theme');
+                        //       },
+                        //       child: Text("Logout")),
+                        // ),
                       ]),
                     ),
                   ],
@@ -278,13 +365,17 @@ print(name);
                           itemCount: snapshots.data.docs!.length,
                           itemBuilder: (BuildContext context, int postion) {
                             return  Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20)
+                              ),
                                 height: MediaQuery
                                     .of(context)
                                     .size
-                                    .height / 4,
-                                padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 5.0, right: 5.0),
+                                    .height / 2,
+                                padding: EdgeInsets.only(top: 6, bottom: 2.0, left: 5.0, right: 5.0),
                                 child: InkWell(
                                   child: Column(children: [
+                                    //Padding(padding: EdgeInsets.only(top: 10)),
                                     Container(
                                       height: MediaQuery
                                           .of(context)
@@ -293,18 +384,20 @@ print(name);
 
                                       //margin: EdgeInsets.only(top: 50),
                                       decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30),
                                           image: DecorationImage(
                                               image: NetworkImage("${snapshots.data.docs[postion].data()["image"]}"), fit: BoxFit.fill)),
                                     ),
                                     Container(
-                                      color: Colors.black,
+                                      //color: Colors.grey,
                                       child: Center(
                                         child: Text(
                                           "${snapshots.data.docs[postion].data()["name"]}" ,
                                           style: TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                              //fontWeight: FontWeight.bold
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -391,51 +484,90 @@ print(name);
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          image != null
-                              ? Container(
+                      Container(
+                        color: Colors.black,
+
+                        height: MediaQuery.of(context).size.height/3,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            image != null
+                                ? Center(
+                              child: Container(
+                                  height: MediaQuery.of(context).size.height / 6,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        fit: BoxFit.fill, image: NetworkImage(image!)),
+                                  )),
+                            )
+                                :
+                            Container(
                               height: MediaQuery.of(context).size.height / 6,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.fill, image: NetworkImage(image!)),
-                              ))
-                              : Container(
-                            height: MediaQuery.of(context).size.height / 6,
-                            width: MediaQuery.of(context).size.width / 6,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
+                              width: MediaQuery.of(context).size.width / 2,
+                              child: Container(
+
+//height: MediaQuery.of(context).size.height,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+
+                                  //borderRadius: BorderRadius.circular(100)
+                                  //  ,
+                                  image: DecorationImage(
+
+                                      fit: BoxFit.fill, image:AssetImage("images/job.jpg")),
+
+                                ),
+                                // child: Icon(
+                                //   color: Colors.white,
+                                //   Icons.person,
+                                //   size: MediaQuery.of(context).size.width / 4,
+                                // ),
+                              ),
+
+
                             ),
-                            child: Center(
-                                child: Icon(
-                                  Icons.person,
-                                  size: MediaQuery.of(context).size.width / 4,
-                                )),
-                          ),
-                          Column(children: [
-                            Text(name!)
-                            ,Text(email!),
+
+
+                            Padding(padding: EdgeInsets.only(top: 10)),
+
+                            Center(
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+
+                                    Center(child: Text("${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
+
+
+
+
+                                    Card(
+                                        margin: EdgeInsets.all(5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(50),
+                                          //set border radius more than 50% of height and width to make circle
+                                        ),
+                                        elevation: 5,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text("${role!}",style: TextStyle(color: Colors.black,fontSize: 15),),
+                                        ))
+                                  ]),
+                            ),
+                            // Center(child: Text("        ${name!}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 20),)),
+                            // Padding(padding: EdgeInsets.only(top: 10)),
+                            // Center(child: Text("        ${role!}",style: TextStyle(color: Colors.white),)),
+                            Padding(padding: EdgeInsets.only(top: 10))
+                            ,Center(child: Text("${email!}",style: TextStyle(color: Colors.white,fontSize: 10),)),
+
 
                           ],
-                          )
-
-                        ],
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width/2,
-                        child: Center(
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:Colors.black ,
-                              ),
-                              onPressed: () {
-                                Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => EditInfo()));
-                              },
-                              child: Text("Edit info")),
                         ),
                       ),
+
+
+
                       Container(
 
                         height: MediaQuery.of(context).size.height / 10,
@@ -449,17 +581,28 @@ print(name);
                             color: Colors.black,
                             size: 30,
                           ),
-                          Padding(padding: EdgeInsets.only(right: 20)),
+                          Padding(padding: EdgeInsets.only(right: 30)),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width/1.8,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:Colors.black ,
+                              width: MediaQuery.of(context).size.width/1.8,
+                              child:
+                              InkWell(
+                                child: Text(
+                                  "Section"
+                                  ,style: TextStyle(fontSize: 20),
                                 ),
-                                onPressed: () {
+                                onTap: () {
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) => MyApplication()));
-                                }, child: Text("Section")),
+                                } ,
+                              )
+                            // ElevatedButton(
+                            //     style: ElevatedButton.styleFrom(
+                            //       backgroundColor:Colors.black ,
+                            //     ),
+                            //     onPressed: () {
+                            //       Navigator.push(context,
+                            //           MaterialPageRoute(builder: (context) => MyApplication()));
+                            //     }, child: Text("Section")),
                           ),
                         ]),
                       ),
@@ -476,15 +619,26 @@ print(name);
                             color: Colors.black,
                             size: 30,
                           ),
-                          Padding(padding: EdgeInsets.only(right: 20)),
+                          Padding(padding: EdgeInsets.only(right: 36)),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.8,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:Colors.black ,
-                                ),
-                                onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting()));}, child: Text("Setting")),
-                          ),
+                              width: MediaQuery.of(context).size.width/1.8,
+                              child:
+                              InkWell(
+                                  child: Text(
+                                    "Setting"
+                                    ,style: TextStyle(fontSize: 20),
+                                  ),
+                                  onTap:  () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting(role)));}
+                              )),
+                          // Padding(padding: EdgeInsets.only(right: 20)),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width / 1.8,
+                          //   child: ElevatedButton(
+                          //       style: ElevatedButton.styleFrom(
+                          //         backgroundColor:Colors.black ,
+                          //       ),
+                          //       onPressed: () { Navigator.push(context,MaterialPageRoute(builder: (context)=>Setting()));}, child: Text("Setting")),
+                          // ),
                         ]),
                       ),
                       Container(
@@ -499,22 +653,39 @@ print(name);
                             color: Colors.black,
                             size: 30,
                           ),
-                          Padding(padding: EdgeInsets.only(right: 20)),
+                          Padding(padding: EdgeInsets.only(right: 36)),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width / 1.8,
-                            child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:Colors.black ,
-                                ),
-                                onPressed: () async {
-                                  signOut();
-                                  SharedPreferences prefs = await SharedPreferences.getInstance();
-                                  prefs.remove('email');
-                                  prefs.remove('id');
-                                  prefs.remove('theme');
-                                },
-                                child: Text("Logout")),
-                          ),
+                              width: MediaQuery.of(context).size.width/1.8,
+                              child:
+                              InkWell(
+                                  child: Text(
+                                    "Logout"
+                                    ,style: TextStyle(fontSize: 20),
+                                  ),
+                                  onTap:  () async{
+                                    signOut();
+                                    SharedPreferences prefs = await SharedPreferences.getInstance();
+                                    prefs.remove('email');
+                                    prefs.remove('id');
+                                    prefs.remove('theme');
+                                  }
+                              )),
+                          // Padding(padding: EdgeInsets.only(right: 20)),
+                          // SizedBox(
+                          //   width: MediaQuery.of(context).size.width / 1.8,
+                          //   child: ElevatedButton(
+                          //       style: ElevatedButton.styleFrom(
+                          //         backgroundColor:Colors.black ,
+                          //       ),
+                          //       onPressed: () async {
+                          //         signOut();
+                          //         SharedPreferences prefs = await SharedPreferences.getInstance();
+                          //         prefs.remove('email');
+                          //         prefs.remove('id');
+                          //         prefs.remove('theme');
+                          //       },
+                          //       child: Text("Logout")),
+                          // ),
                         ]),
                       ),
                     ],
@@ -551,7 +722,8 @@ print(name);
                           ),
                           itemCount: snapshots.data.docs!.length,
                           itemBuilder: (BuildContext context, int postion) {
-                            return  Container(
+                            return
+                              Container(
                                 height: MediaQuery
                                     .of(context)
                                     .size
@@ -559,6 +731,7 @@ print(name);
                                 padding: EdgeInsets.only(top: 2.0, bottom: 2.0, left: 5.0, right: 5.0),
                                 child: InkWell(
                                   child: Column(children: [
+                                    //Padding(padding: EdgeInsets.only(top: 10)),
                                     Container(
                                       height: MediaQuery
                                           .of(context)
@@ -567,18 +740,20 @@ print(name);
 
                                       //margin: EdgeInsets.only(top: 50),
                                       decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(30),
                                           image: DecorationImage(
                                               image: NetworkImage("${snapshots.data.docs[postion].data()["image"]}"), fit: BoxFit.fill)),
                                     ),
                                     Container(
-                                      color: Colors.black,
+                                      //color: Colors.grey,
                                       child: Center(
                                         child: Text(
                                           "${snapshots.data.docs[postion].data()["name"]}" ,
                                           style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                            color: Colors.black,
+                                            fontSize: 20,
+                                            //fontWeight: FontWeight.bold
+                                          ),
                                         ),
                                       ),
                                     ),

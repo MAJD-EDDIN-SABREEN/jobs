@@ -113,195 +113,220 @@ return
       centerTitle: true,
     ),
   body: 
-  Container(padding: EdgeInsets.all(10),
-    child: Form(key:formStateUpdateSection ,
-    child: Column(
+  Container(padding: EdgeInsets.all(5),
+    height: MediaQuery.of(context).size.height/2,
+    child:
+    Card(
+      elevation: 10,
+      margin: EdgeInsets.all(10),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+        //set border radius more than 50% of height and width to make circle
+      ),
+      child: Form(key:formStateUpdateSection ,
+      child: Column(
 
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/15)),
-          (file==null)?
-          InkWell(child:  Container(
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+         // crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+                padding: EdgeInsets.only(top: 5)),
+            (file==null)?
+            InkWell(child:  Container(
 
-            height: MediaQuery.of(context).size.height/6,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
+              height: MediaQuery.of(context).size.height/6,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
 
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image:NetworkImage(image)
-                )
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image:NetworkImage(image)
+                  )
+              ),
+
+
             ),
-
-
-          ),
-            onTap:(){  showDialog(context: context, builder: (
-                BuildContext context) {
-              return
-                AlertDialog(
-                  title: Text("please select"),
-                  actions: [
-                    InkWell(
-                      child: Row(
-                        children: [
-                          Icon(Icons.camera_alt),
-                          Text("From camera")
-                        ],
-                      )
-                      , onTap: () {
-                      Navigator.pop(context);
-                      uplodImages();
-                    },
-                    ),
-                    Padding(padding: EdgeInsets.all(10),),
-                    InkWell(
-                      child: Row(
-                        children: [
-                          Icon(Icons.image),
-                          Text("From gallery")
-                        ],
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        uplodImagesFromGallery();
-                      },
-                    )
-                    //onTap: uplodImages(),
-
-                  ],
-                );
-            });} ,)
-
-              :
-          InkWell(child:Container(
-            height: MediaQuery.of(context).size.height/6,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image:FileImage(file!)
-                )
-
-            ),) ,
-              onTap: (){
-                showDialog(context: context, builder: (
-                    BuildContext context) {
-                  return
-                    AlertDialog(
-                      title: Text("please select"),
-                      actions: [
-                        InkWell(
-                          child: Row(
-                            children: [
-                              Icon(Icons.camera_alt),
-                              Text("From camera")
-                            ],
-                          )
-                          , onTap: () {
-                          Navigator.pop(context);
-                          uplodImages();
-                        },
-                        ),
-                        Padding(padding: EdgeInsets.all(10),),
-                        InkWell(
-                          child: Row(
-                            children: [
-                              Icon(Icons.image),
-                              Text("From gallery")
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            uplodImagesFromGallery();
-                          },
+              onTap:(){  showDialog(context: context, builder: (
+                  BuildContext context) {
+                return
+                  AlertDialog(
+                    title: Text("please select"),
+                    actions: [
+                      InkWell(
+                        child: Row(
+                          children: [
+                            Icon(Icons.camera_alt),
+                            Text("From camera")
+                          ],
                         )
-                        //onTap: uplodImages(),
+                        , onTap: () {
+                        Navigator.pop(context);
+                        uplodImages();
+                      },
+                      ),
+                      Padding(padding: EdgeInsets.all(10),),
+                      InkWell(
+                        child: Row(
+                          children: [
+                            Icon(Icons.image),
+                            Text("From gallery")
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          uplodImagesFromGallery();
+                        },
+                      )
+                      //onTap: uplodImages(),
 
-                      ],
-                    );
-                });
-              })
-          ,    Padding(padding: EdgeInsets.only(top: 10)),
-          TextFormField(
-            controller: title1,
-            validator: (value) {
-              if (value == null || value.isEmpty) return 'Field is required.';
-              return null;
-            },
-            textCapitalization: TextCapitalization.words,
+                    ],
+                  );
+              });} ,)
+
+                :
+            InkWell(child:Container(
+              height: MediaQuery.of(context).size.height/6,
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      fit: BoxFit.fill,
+                      image:FileImage(file!)
+                  )
+
+              ),) ,
+                onTap: (){
+                  showDialog(context: context, builder: (
+                      BuildContext context) {
+                    return
+                      AlertDialog(
+                        title: Text("please select"),
+                        actions: [
+                          InkWell(
+                            child: Row(
+                              children: [
+                                Icon(Icons.camera_alt),
+                                Text("From camera")
+                              ],
+                            )
+                            , onTap: () {
+                            Navigator.pop(context);
+                            uplodImages();
+                          },
+                          ),
+                          Padding(padding: EdgeInsets.all(10),),
+                          InkWell(
+                            child: Row(
+                              children: [
+                                Icon(Icons.image),
+                                Text("From gallery")
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.pop(context);
+                              uplodImagesFromGallery();
+                            },
+                          )
+                          //onTap: uplodImages(),
+
+                        ],
+                      );
+                  });
+                })
+            ,    Padding(padding: EdgeInsets.only(top: 10)),
+            Padding(
+              padding: EdgeInsets.only(top: 50,right: 8,left: 8),
+              child: TextFormField(
+                controller: title1,
+                validator: (value) {
+                  if (value == null || value.isEmpty) return 'Field is required.';
+                  return null;
+                },
+                textCapitalization: TextCapitalization.words,
 
 
-            decoration: const InputDecoration(
-                border: UnderlineInputBorder(),
-                filled: true,
-                icon: Icon(Icons.pages_outlined),
-                labelText:'Title',
+                decoration: const InputDecoration(
+                    fillColor: Colors.white,
 
-                labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                    border:OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))
+                    ),
+                    filled: true,
+                    //icon: Icon(Icons.pages_outlined),
+                    labelText:'Title',
+
+                    labelStyle: TextStyle(color: Colors.black87,fontWeight: FontWeight.bold)
+                ),
+              ),
+            ) ,
+            Padding(padding: EdgeInsets.only(top: 62))
+            ,Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                (isLoading==false) ?
+                    SizedBox(width: MediaQuery.of(context).size.width/2.6,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(Colors.black),
+                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius:
+                                    BorderRadius.circular(18.0), // radius you want
+                                    side: BorderSide(
+                                      color: Colors.transparent, //color
+                                    ),
+                                  ))),
+                        onPressed: () async {
+                          setState((){
+                            isLoading=true;
+                          });
+                          var refStorage = FirebaseStorage.instance.ref("images/$nameImage");
+                          if(file!=null)
+                          {
+                            await refStorage.putFile(file!);
+                            url = await refStorage.getDownloadURL();
+                          }
+                          else{
+                            url=image;
+                          }
+                          await updateData(id,context);
+                          setState((){
+                            isLoading=false;
+                          });
+                        }, child:Text("Update")) ,)
+
+                    :
+                Center(child:CircularProgressIndicator()),
+                Padding(padding: EdgeInsets.only(left: 5)),
+                (isLoading==false) ?
+                SizedBox(width: MediaQuery.of(context).size.width/2.6,
+                    child:  ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.red),
+                            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius.circular(18.0), // radius you want
+                                  side: BorderSide(
+                                    color: Colors.transparent, //color
+                                  ),
+                                ))),
+                    onPressed: () async {
+                      setState((){
+                        isLoading=true;
+                      });
+                      await deleteData(id);
+                      setState((){
+                        isLoading=false;
+                      });
+                      Navigator.pop(context);}, child:Text("Delete")))
+               :
+                Center(child:CircularProgressIndicator())
+              ],
             ),
-          ) ,
-          Padding(padding: EdgeInsets.only(top: 50))
-          ,Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              (isLoading==false) ?
-                  SizedBox(width: MediaQuery.of(context).size.width/2.2,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:Colors.black ,
+            //Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/15)),
 
-                          //padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                          textStyle: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold)),
-                      onPressed: () async {
-                        setState((){
-                          isLoading=true;
-                        });
-                        var refStorage = FirebaseStorage.instance.ref("images/$nameImage");
-                        if(file!=null)
-                        {
-                          await refStorage.putFile(file!);
-                          url = await refStorage.getDownloadURL();
-                        }
-                        else{
-                          url=image;
-                        }
-                        await updateData(id,context);
-                        setState((){
-                          isLoading=false;
-                        });
-                      }, child:Text("Update")) ,)
-
-                  :
-              Center(child:CircularProgressIndicator()),
-              Padding(padding: EdgeInsets.only(left: 5)),
-              (isLoading==false) ?
-              SizedBox(width: MediaQuery.of(context).size.width/2.2,
-                  child:  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor:Colors.red ,
-
-                          //padding: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-                          textStyle: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold)),
-                  onPressed: () async {
-                    setState((){
-                      isLoading=true;
-                    });
-                    await deleteData(id);
-                    setState((){
-                      isLoading=false;
-                    });
-                    Navigator.pop(context);}, child:Text("Delete")))
-             :
-              Center(child:CircularProgressIndicator())
-            ],
-          ),Padding(padding: EdgeInsets.only(top: MediaQuery.of(context).size.height/15)),
-
-        ]),),
+          ]),),
+    ),
   )
 
 
